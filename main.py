@@ -2,13 +2,24 @@ import numpy as np
 import CalculationClass
 
 
-#calls the distance function using arguments from another file. Arguments may be generated from another funtion or DB
+# calls the distance function using arguments from another file. Arguments may be generated from another funtion or DB
 dt = np.around(CalculationClass.calculate_distance(CalculationClass.h_t, CalculationClass.e_t), decimals=0)
 print("d_t = ", dt)
+
 test = CalculationClass.test_funtion()
 print("test of x calc = ", test)
-x_t = np.around(CalculationClass.polar_to_rectangular_coordinate_transformation_x(dt, CalculationClass.az_t), decimals=0)
-print(x_t)
-y_t = np.around(CalculationClass.polar_to_rectangular_coordinate_transformation_y(dt, CalculationClass.az_t), decimals=0)
-print(y_t)
 
+x_t = np.around(CalculationClass.polar_to_rectangular_coordinate_transformation_x(dt, CalculationClass.az_t), decimals=0)
+print("x_t are", x_t)
+
+y_t = np.around(CalculationClass.polar_to_rectangular_coordinate_transformation_y(dt, CalculationClass.az_t), decimals=0)
+print("y_t are:", y_t)
+
+delta_x_t = CalculationClass.find_delta_x(x_t)
+print("delta_x_t are:", delta_x_t)
+
+delta_y_t = CalculationClass.find_delta_y(y_t)
+print("delta_y_t are:", delta_y_t)
+
+mean_wind_speed = np.around(CalculationClass.mean_wind_speed(delta_x_t, delta_y_t, CalculationClass.time_interval), decimals=1)
+print("these are the mean wind speeds:", mean_wind_speed)
