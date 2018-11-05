@@ -30,7 +30,8 @@ def polar_to_rectangular_coordinate_transformation_y(distance_t, azimuth_t):
     return y
 
 
-# requires subtracting the next x_t in the array have to initialize as the x_t array and then exclude the 1st element [1:]
+# requires subtracting the next x_t in the array have to initialize as the x_t array and then
+# exclude the 1st element [1:]
 def find_delta_x(x_of_t_time):
     delta_x_t = np.array(x_of_t_time)
     delta_x_t[1:] = [z - w for w, z in zip(delta_x_t, delta_x_t[1:])]
@@ -46,14 +47,26 @@ def find_delta_y(y_of_t_time):
 
 # this is likely to have the (x, y) and will be transformed to polar in the next function
 def mean_wind_speed(x_of_t_time, y_of_t_time, time_interval_of_readings):
-    velocity_i = (x_of_t_time **2 + y_of_t_time **2)**.5 / time_interval_of_readings
+    velocity_i = (x_of_t_time ** 2 + y_of_t_time ** 2)**.5 / time_interval_of_readings
     return velocity_i
 
 
-
 # the result of the mean wind speed in (x, y) needs transformed to (point, angle}
-def rectangular_to_polar_coordinate_transformation():
-    pass
+def rectangular_to_polar_coordinate_transformation(delta_y_of_t_time, delta_x_of_t_time):
+    direction_i = np.empty_like(delta_x_of_t_time)
+    x_of_t_time_signs = np.sign(delta_x_of_t_time)
+    y_of_t_time_signs = np.sign(delta_x_of_t_time)
+    print("delta_x_of_t", delta_x_of_t_time)
+    print("delta_y_of_t", delta_y_of_t_time)
+    print("x_of_t_signs", x_of_t_time_signs)
+    print("y_of_t_sings", y_of_t_time_signs)
+    non_transformed_direction = np.arctan(delta_y_of_t_time / delta_x_of_t_time)
+    non_transformed_direction = np.rad2deg(non_transformed_direction) # the result must be transformed from rad to deg
+    print("non_transformed_direction", non_transformed_direction)
+    if np.any(x_of_t_time_signs) and np.any(y_of_t_time_signs) == 1: # I don't think np.any is correct
+        #  for checking element sign individually
+        direction_i = 270 - non_transformed_direction
+    return direction_i
 
 
 # changes the angle from computer east to north
@@ -61,10 +74,12 @@ def azimuth_east_to_north():
     pass
 
 
-def test_funtion():
-    x = 284 * math.sin(math.radians(88.5))
-    return x
-
+def test_funtion(d_y_t, d_x_t):# notice the
+    # angle = np.empty_like(d_y_t)
+    angle = np.arctan(d_y_t / d_x_t)
+    angle = np.rad2deg(angle)
+    print("angle after arctan in radians", angle)
+    return angle
 #calculate_distance(ht, et)
 #azimuth_north_to_east(azt)
 

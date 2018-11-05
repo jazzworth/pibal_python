@@ -6,9 +6,6 @@ import CalculationClass
 dt = np.around(CalculationClass.calculate_distance(CalculationClass.h_t, CalculationClass.e_t), decimals=0)
 print("d_t = ", dt)
 
-test = CalculationClass.test_funtion()
-print("test of x calc = ", test)
-
 x_t = np.around(CalculationClass.polar_to_rectangular_coordinate_transformation_x(dt, CalculationClass.az_t), decimals=0)
 print("x_t are", x_t)
 
@@ -23,3 +20,9 @@ print("delta_y_t are:", delta_y_t)
 
 mean_wind_speed = np.around(CalculationClass.mean_wind_speed(delta_x_t, delta_y_t, CalculationClass.time_interval), decimals=1)
 print("these are the mean wind speeds:", mean_wind_speed)
+
+pibal_direction_t = np.around(CalculationClass.rectangular_to_polar_coordinate_transformation(delta_y_t, delta_x_t))
+print("the pibal direction is:", pibal_direction_t)
+
+test = CalculationClass.test_funtion(delta_y_t, delta_x_t)
+print("test of x calc = ", test)
