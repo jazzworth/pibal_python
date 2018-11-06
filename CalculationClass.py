@@ -1,4 +1,7 @@
 import numpy as np
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+import matplotlib.transforms as mtransforms
 import math as math
 import itertools as it
 
@@ -56,6 +59,8 @@ def rectangular_to_polar_coordinate_transformation(delta_y_of_t_time, delta_x_of
     direction_i = np.empty_like(delta_x_of_t_time)
     x_of_t_time_signs = np.sign(delta_x_of_t_time)
     y_of_t_time_signs = np.sign(delta_x_of_t_time)
+    x_and_y_time_signs = np.column_stack((x_of_t_time_signs, y_of_t_time_signs))
+    print("x and y signs together:", x_and_y_time_signs)
     print("delta_x_of_t", delta_x_of_t_time)
     print("delta_y_of_t", delta_y_of_t_time)
     print("x_of_t_signs", x_of_t_time_signs)
@@ -64,17 +69,26 @@ def rectangular_to_polar_coordinate_transformation(delta_y_of_t_time, delta_x_of
     non_transformed_direction = np.rad2deg(non_transformed_direction) # the result must be transformed from rad to deg
     print("non_transformed_direction", non_transformed_direction)
     if np.any(x_of_t_time_signs) and np.any(y_of_t_time_signs) == 1: # I don't think np.any is correct
-        #  for checking element sign individually
+        # for checking element sign individually
         direction_i = 270 - non_transformed_direction
     return direction_i
+
+def non_transformed_direction_for_plot(delta_y_of_t_time, delta_x_of_t_time):
+    non_transformed_direction = np.arctan(delta_y_of_t_time / delta_x_of_t_time)
+    print('non-transformed for plot:', non_transformed_direction)
+    return non_transformed_direction
 
 
 # changes the angle from computer east to north
 def azimuth_east_to_north():
     pass
 
+def polar_plot(non_transformed_direction_t, velocity_i): # https://media.readthedocs.org/pdf/windrose/latest/windrose.pdf
+    plt.polar(non_transformed_direction_t, velocity_i) # https://windrose.readthedocs.io/en/latest/
+    plt.show()
 
-def test_funtion(d_y_t, d_x_t):# notice the
+
+def test_function(d_y_t, d_x_t):# notice the
     # angle = np.empty_like(d_y_t)
     angle = np.arctan(d_y_t / d_x_t)
     angle = np.rad2deg(angle)

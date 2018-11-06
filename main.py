@@ -1,5 +1,6 @@
 import numpy as np
 import CalculationClass
+import matplotlib.pyplot as plt
 
 
 # calls the distance function using arguments from another file. Arguments may be generated from another funtion or DB
@@ -24,5 +25,10 @@ print("these are the mean wind speeds:", mean_wind_speed)
 pibal_direction_t = np.around(CalculationClass.rectangular_to_polar_coordinate_transformation(delta_y_t, delta_x_t))
 print("the pibal direction is:", pibal_direction_t)
 
-test = CalculationClass.test_funtion(delta_y_t, delta_x_t)
-print("test of x calc = ", test)
+non_transformed_direction_polar_plot = np.around(CalculationClass.non_transformed_direction_for_plot(delta_y_t, delta_x_t))
+print('Non transfomed vaues in radians:', non_transformed_direction_polar_plot)
+
+# test = CalculationClass.test_funtion(delta_y_t, delta_x_t)
+# print("test of x calc = ", test)
+
+plot = CalculationClass.polar_plot(non_transformed_direction_polar_plot, mean_wind_speed)
