@@ -11,6 +11,7 @@ az_t = np.array([88.5, 78.1, 64.3, 55.8, 57.0, 60.9])  # azimuth angle as read f
 time_interval = 60 # the time interval a reading is taken in seconds
 
 
+
 # this calculates the distance from the theodolite to be used
 def calculate_distance(height, elevation_angle):
     etan = np.tan(elevation_angle * np.pi / 180)  # tangent of all values in et
@@ -65,13 +66,12 @@ def rectangular_to_polar_coordinate_transformation(delta_y_of_t_time, delta_x_of
     print("delta_y_of_t", delta_y_of_t_time)
     print("x_of_t_signs", x_of_t_time_signs)
     print("y_of_t_sings", y_of_t_time_signs)
-    non_transformed_direction = np.arctan(delta_y_of_t_time / delta_x_of_t_time)
-    non_transformed_direction = np.rad2deg(non_transformed_direction) # the result must be transformed from rad to deg
+    non_transformed_direction = np.arctan2(delta_y_of_t_time , delta_x_of_t_time) * 180 / np.pi
+    # non_transformed_direction = np.rad2deg(non_transformed_direction) # the result must be transformed from rad to deg
     print("non_transformed_direction", non_transformed_direction)
-    if np.any(x_of_t_time_signs) and np.any(y_of_t_time_signs) == 1: # I don't think np.any is correct
-        # for checking element sign individually
-        direction_i = 270 - non_transformed_direction
-    return direction_i
+    # x_of_t_time_signs ==1 and y_of_t_time_signs == 1# I don't think np.any is correct
+    # direction_i = 270 - non_transformed_direction
+    return non_transformed_direction
 
 def non_transformed_direction_for_plot(delta_y_of_t_time, delta_x_of_t_time):
     non_transformed_direction = np.arctan(delta_y_of_t_time / delta_x_of_t_time)
