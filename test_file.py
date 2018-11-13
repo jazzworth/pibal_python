@@ -17,16 +17,20 @@ def create_data_frame(time_interval, height, elevation_angle, azimuth_angle):
     all_data = pd.DataFrame.from_dict(data)
     return all_data
 
+def np_where_funtion():
+    direction = np.array([5, 180, 400])
+    direction = np.where(direction > 360, direction - 360, 270 - direction)
+    # direction = np.where(direction < 360, direction, direction - 360)
+    return direction
 
 new_df = create_data_frame(time_int, h_t, e_t, az_t)
 print(new_df)
 
+new_direction = np_where_funtion()
+print(new_direction)
 
-array1 = np.array([1,2,3])
-array2 = np.array([4,5,6])
+# dict_array = {'1st set': array1, '2nd set': array2}
 
-dict_array = {'1st set': array1, '2nd set': array2}
-
-test_df = pd.DataFrame(dict_array)
-print(test_df)
+# test_df = pd.DataFrame(dict_array)
+# print(test_df)
 

@@ -67,6 +67,10 @@ def rectangular_to_polar_coordinate_transformation(delta_y_of_t_time, delta_x_of
     print("x_of_t_signs", x_of_t_time_signs)
     print("y_of_t_sings", y_of_t_time_signs)
     non_transformed_direction = np.arctan2(delta_y_of_t_time , delta_x_of_t_time) * 180 / np.pi
+    non_transformed_direction = np.where(non_transformed_direction > 360, 360 - non_transformed_direction, 270 - non_transformed_direction)
+    # non_transformed_direction = np.where(non_transformed_direction < 360, non_transformed_direction, non_transformed_direction - 360)
+
+
     # non_transformed_direction = np.rad2deg(non_transformed_direction) # the result must be transformed from rad to deg
     print("non_transformed_direction", non_transformed_direction)
     # x_of_t_time_signs ==1 and y_of_t_time_signs == 1# I don't think np.any is correct
