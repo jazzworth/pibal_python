@@ -12,7 +12,7 @@ total_observation_time = 6 # total time the pibal will be observed
 
 def create_data_frame(time_interval, height, elevation_angle, azimuth_angle):
     # a dict or np arrays of collected data
-    data = {'Time Interval': time_interval, 'Height': height, 'Elevation Angle': elevation_angle, 'Azimuth_Angle': az_t}
+    data = {'Time Interval': time_interval, 'Height': height, 'Elevation Angle': elevation_angle, 'Azimuth_Angle': azimuth_angle}
     # using the data to populate the DataFrame
     all_data = pd.DataFrame.from_dict(data)
     return all_data
