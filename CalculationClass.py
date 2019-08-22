@@ -8,26 +8,93 @@ import matplotlib.transforms as mtransforms
 import math as math
 import itertools as it
 
-h_t = np.array([216, 414, 612, 801, 990, 1170])  # array of know height at a given time interval (Ti)
-e_t = np.array([37.3, 45.8, 51.3, 52.3, 51.1, 48.1])  # elevation angle in degrees measurements taken a Ti
-az_t = np.array([88.5, 78.1, 64.3, 55.8, 57.0, 60.9])  # azimuth angle as read from north. will be converted to east
-time_interval = 60 # the time interval a reading is taken in seconds
-num_of_intervals = 0 #how many time intervals the user wants to track. This could be derived from time_interval and a max_altitude
+# h_t = np.array([105, 216, 315, 414, 513, 612, 707, 801, 896, 990, 1080, 1170])  # array of know height at a given time interval (Ti)
+# e_t = np.array([37.3, 0, 45.8, 51.3, 52.3, 51.1, 48.1])  # elevation angle in degrees measurements taken a Ti
+# az_t = np.array([88.5, 78.1, 64.3, 55.8, 57.0, 60.9])  # azimuth angle as read from north. will be converted to east
+
 """Need to calculate the lift based on the time interval given by the user (60 sec max).  Maybe only use 30 and 60 sec
 as options.  can ask user the max altitude to track and derive the num_of_intervals based on the ascent rate calculation
 (a max of 5000ft or similar).  Thgis will then set the height array and thus the shape of the arrays and the 
 resulting data frame.  Will create skeleton function"""
 
-#this will take the time interval, and max altitude and output the height(h_t) at intervals to the max. row count going forward
-def calculate_height_at_intervals():
-    pass
 
-def capture_elevation_and_azimuth():
-    pass
+# calculate rate of ascent by size of pibal in 60 seconds
+def ascent_rate_calc():
+      # pressure of air estimated but can be calculated
+    p_air = 1.29
+    # pressure of helium
+    p_he = .179
+    # gravity in m/s
+    gravity = 9.81
+    # drag coefficient average .50
+    drag_coefficient = .50
+    # captures pibal dimater calc radius and converts to meters
+    pibal_diameter = float(input('What is the diamter of the pibal (in inches)? '))
+    pibal_radius = (pibal_diameter * .0254) / 2
+    print('radius of the pibal is: ' + str(pibal_radius))
+    # calcualtes the horizontal velocity in feet/min
+    pibal_ascent_rate = math.sqrt((8.0*(gravity)*(pibal_radius)/(3.0*(drag_coefficient)))*(p_air - p_he)/p_air) * 196.85
+    print('the pibal ascends at: ' + str(pibal_ascent_rate) + ' feet per minute')
+    return pibal_ascent_rate
+
+
+# this will ask the user how many seconds between readings and how many readings
+def time_interval():
+    time_interval = 0
+    # input control
+    while time_interval not in (30, 60):
+        time_interval = float(input('How many seconds between readings (enter 30 or 60?) '))
+        if time_interval not in (30, 60):
+            print('***PLEASE ENTER 30 OR 60***')
+        else:
+            return time_interval
+
+      
+# this asks how many readings the user wants to take at the specified interval
+def number_of_intervals():
+    num_of_intervals = int(input('How many readings do you want to take? '))
+    return num_of_intervals
+
+
+# this populates a numpy array of altitude values either at 30 or 60 seconds
+# the 
+def calculate_height_at_intervals(num_of_intervals, pibal_ascent_rate, time_interval):
+    lst = []
+    total_height = 0
+    if time_interval == 30:
+        for n in range(num_of_intervals):
+            total_height += pibal_ascent_rate / 2
+            lst.append(total_height)
+    else:
+        for n in range(num_of_intervals):
+            total_height += pibal_ascent_rate
+            lst.append(total_height)
+    h_t = np.array(lst)
+    print(lst)
+    print(h_t)         
+    return h_t
+
+
+# capture user input for angle and azimuth
+def capture_elevation_and_azimuth(number_of_intervals):
+    lst_angle = []
+    lst_azimuth = []
+    for n in range(number_of_intervals):
+        lst_angle_input = float(input("enter elevation angle (vertical angle in degrees): \n" ))
+        lst_angle.append(lst_angle_input)
+        lst_azimuth_input = float(input("enter azimuth (horizontal in degrees: \n" ))
+        lst_azimuth.append(lst_azimuth_input)
+    e_t = np.array(lst_angle)
+    az_t = np.array(lst_azimuth)
+    print(e_t)
+    print(az_t)
+    return e_t, az_t   
+
 
 #this will take the time interval and start a timer for the user.  May be an advanced function.
 def interval_timer():
     pass
+
 
 # this calculates the distance from the theodolite to be used
 def calculate_distance(height, elevation_angle):
@@ -67,8 +134,8 @@ def find_delta_y(y_of_t_time):
 
 
 # this is likely to have the (x, y) and will be transformed to polar in the next function
-def mean_wind_speed(x_of_t_time, y_of_t_time, time_interval_of_readings):
-    velocity_i = (x_of_t_time ** 2 + y_of_t_time ** 2)**.5 / time_interval_of_readings
+def mean_wind_speed(x_of_t_time, y_of_t_time, time_interval):
+    velocity_i = (x_of_t_time ** 2 + y_of_t_time ** 2)**.5 / time_interval
     return velocity_i
 
 
