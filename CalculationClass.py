@@ -14,28 +14,8 @@ import itertools as it
 
 """Need to calculate the lift based on the time interval given by the user (60 sec max).  Maybe only use 30 and 60 sec
 as options.  can ask user the max altitude to track and derive the num_of_intervals based on the ascent rate calculation
-(a max of 5000ft or similar).  Thgis will then set the height array and thus the shape of the arrays and the 
+(a max of 5000ft or similar).  This will then set the height array and thus the shape of the arrays and the 
 resulting data frame.  Will create skeleton function"""
-
-
-# calculate rate of ascent by size of pibal in 60 seconds
-def ascent_rate_calc():
-      # pressure of air estimated but can be calculated
-    p_air = 1.29
-    # pressure of helium
-    p_he = .179
-    # gravity in m/s
-    gravity = 9.81
-    # drag coefficient average .50
-    drag_coefficient = .50
-    # captures pibal dimater calc radius and converts to meters
-    pibal_diameter = float(input('What is the diamter of the pibal (in inches)? '))
-    pibal_radius = (pibal_diameter * .0254) / 2
-    print('radius of the pibal is: ' + str(pibal_radius))
-    # calcualtes the horizontal velocity in feet/min
-    pibal_ascent_rate = math.sqrt((8.0*(gravity)*(pibal_radius)/(3.0*(drag_coefficient)))*(p_air - p_he)/p_air) * 196.85
-    print('the pibal ascends at: ' + str(pibal_ascent_rate) + ' feet per minute')
-    return pibal_ascent_rate
 
 
 # this will ask the user how many seconds between readings and how many readings
@@ -55,6 +35,7 @@ def number_of_intervals():
     num_of_intervals = int(input('How many readings do you want to take? '))
     return num_of_intervals
 
+# TODO tell the user at what altitude the timer will stop
 
 # this populates a numpy array of altitude values either at 30 or 60 seconds
 # the 
