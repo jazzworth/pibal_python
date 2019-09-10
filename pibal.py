@@ -55,7 +55,7 @@ class Interval():
           
     def max_height_of_readings(self, pibal_ascent_rate, max_altitude):
         pass
-
+#need to reasess design and only not use a fixed array
 class DataSetArrays():
     def __init__(self, num_of_intervals, pibal_ascent_rate, time_interval):
         self.num_of_intervals = num_of_intervals
