@@ -4,3 +4,5 @@
 /.idea
 #ignore vscode
 /.vscode
+#ignore pytest 
+/.pytest_cache
